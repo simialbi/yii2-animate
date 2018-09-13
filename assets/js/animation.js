@@ -17,7 +17,7 @@
 
 	$.fn.extend({
 		animateCss: function (animationName, callback) {
-			var $elements = this;
+			var $elements = this, $w = $(window), threshold = 0;
 
 			$elements.one(animationEnd, function () {
 				var $this = $(this);
@@ -29,7 +29,7 @@
 				}
 			});
 
-			$(window).on('scroll.animation resize.animation lookup.animation', function () {
+			$w.on('scroll.animation resize.animation lookup.animation', function () {
 				$elements.filter(function () {
 					var $e = $(this);
 					if ($e.is(':hidden')) {
@@ -38,11 +38,11 @@
 
 					var wt = $w.scrollTop(), wb = wt + $w.height(), et = $e.offset().top, eb = et + $e.height();
 
-					return eb >= wt - th && et <= wb + th;
+					return eb >= wt - threshold && et <= wb + threshold;
 				}).addClass('animated ' + animationName);
 			});
 
-			$(window).trigger('scroll.animation');
+			$w.trigger('scroll.animation');
 
 			return this;
 		}
