@@ -22,7 +22,7 @@
 			$elements.one(animationEnd, function () {
 				var $this = $(this);
 				$this.removeClass('animated ' + animationName);
-				$this.data('animation', null);
+				$this.data('animation', 'finished');
 
 				if (typeof callback === 'function') {
 					callback();
@@ -32,7 +32,7 @@
 			$w.on('scroll.animation resize.animation lookup.animation', function () {
 				$elements.filter(function () {
 					var $e = $(this);
-					if ($e.is(':hidden')) {
+					if ($e.is(':hidden') || $e.hasClass('animated') || $e.data('animation') === 'finished') {
 						return;
 					}
 
