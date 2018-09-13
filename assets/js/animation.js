@@ -17,7 +17,9 @@
 
 	$.fn.extend({
 		animateCss: function (animationName, callback) {
-			this.one(animationEnd, function () {
+			var $elements = this;
+
+			$elements.one(animationEnd, function () {
 				var $this = $(this);
 				$this.removeClass('animated ' + animationName);
 				$this.data('animation', null);
@@ -28,14 +30,13 @@
 			});
 
 			$(window).on('scroll.animation resize.animation lookup.animation', function () {
-				this.filter(function() {
+				$elements.filter(function () {
 					var $e = $(this);
-					if ($e.is(":hidden")) return;
+					if ($e.is(':hidden')) {
+						return;
+					}
 
-					var wt = $w.scrollTop(),
-						wb = wt + $w.height(),
-						et = $e.offset().top,
-						eb = et + $e.height();
+					var wt = $w.scrollTop(), wb = wt + $w.height(), et = $e.offset().top, eb = et + $e.height();
 
 					return eb >= wt - th && et <= wb + th;
 				}).addClass('animated ' + animationName);
